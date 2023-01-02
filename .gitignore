@@ -1,6 +1,7 @@
 # folders
-.idea
 __pycache__
+.idea
+venv
 
 # files
 db.sqlite3
