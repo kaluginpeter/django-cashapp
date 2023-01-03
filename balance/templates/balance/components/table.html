@@ -1,3 +1,4 @@
+{% load static %}
 <table class="table">
   <thead>
     <tr>
@@ -15,6 +16,9 @@
       <td>{{ payment.created }}</td>
       <td><form method="post" action="/delete/{{ payment.id }}/">{% csrf_token %}<button class="btn btn-danger" type="submit">Удалить</button></form></td>
     </tr>
+    {% empty %}
+        <tr><th colspan="4" class="text-center"><img  width="300px" src="{% static 'balance/images/no_money.png' %}"><p>Здесь ничего нет</p></th></tr>
+
     {% endfor %}
   </tbody>
 </table>
