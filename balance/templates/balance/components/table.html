@@ -10,7 +10,7 @@
     {% for payment in payments %}
     <tr>
       <th>{{ payment.amount }}</th>
-      <td>{{ payment.type }}</td>
+      <td>{{ payment.get_type_display }}</td>
       <td>{{ payment.created }}</td>
     </tr>
     {% endfor %}

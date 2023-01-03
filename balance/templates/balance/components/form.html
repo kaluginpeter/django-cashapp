@@ -1,0 +1,5 @@
+<form method="post" action="/create/">{% csrf_token %}<input type="number" name="amount">
+<select name="type"><option value="in">Поступление</option> <option value="out">Расход</option></select>
+<button type="submit">Добавить</button>
+
+</form>
