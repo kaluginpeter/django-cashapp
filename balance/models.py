@@ -11,6 +11,7 @@ class Payment(models.Model):
         (PAYMENT_TYPE_IN, 'Поступление'),
         (PAYMENT_TYPE_OUT, 'Расход')
     ))
+    description = models.TextField(max_length=1000, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

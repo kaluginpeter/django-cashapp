@@ -17,7 +17,7 @@ def payments_list(request):
 def payment_create(request):
     if request.method == 'POST':
         data = request.POST
-        Payment.objects.create(amount=data['amount'], type=data['type'])
+        Payment.objects.create(amount=data['amount'], type=data['type'], description=data['description'])
     return redirect('payments_list')
 
 
