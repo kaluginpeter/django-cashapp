@@ -3,7 +3,6 @@ from balance.models import Payment, PAYMENT_TYPE_IN
 
 
 def payments_list(request):
-
     payments = Payment.objects.all()
     balance = 0
 

@@ -1,14 +1,31 @@
-<form action="/create/" method="post">{% csrf_token %}
-    <div class="mb-3">
-      <label for="amount_input" class="form-label">Введите сумму</label>
-      <input name="amount" type="number" step="any" id="amount_input" class="form-control" placeholder="Введите число" required>
+<form action="/create/" method="post">
+  {% csrf_token %}
+  <div class="row align-items-end">
+    <div class="col">
+      <label for="amountInput" class="form-label">Введите сумму</label>
+      <input
+        name="amount"
+        type="number"
+        step="any"
+        id="amountInput"
+        class="form-control"
+        placeholder="Введите число"
+        required
+      />
     </div>
-    <div class="mb-3">
-      <label for="type_select" class="form-label">Тип данных</label>
-      <select name="type" id="type_select" class="form-select">
+
+    <div class="col-auto">
+      <label for="typeSelect" class="form-label">Тип данных</label>
+      <select name="type" id="typeSelect" class="form-select">
         <option value="in">Пополнение</option>
-          <option value="out">Расход</option>
+        <option value="out">Расход</option>
       </select>
     </div>
-    <button type="submit" class="btn btn-primary">Добавить</button>
+
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary h-auto">
+        Добавить
+      </button>
+    </div>
+  </div>
 </form>
