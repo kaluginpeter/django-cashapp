@@ -1,31 +1,42 @@
 <form action="/create/" method="post">
   {% csrf_token %}
-  <div class="row align-items-end">
+  <div class="row align-items-start">
     <div class="col">
-      <label for="amountInput" class="form-label">Введите сумму</label>
-      <input
-        name="amount"
-        type="number"
-        step="any"
-        id="amountInput"
-        class="form-control"
-        placeholder="Введите число"
-        required
-      />
+      <div class="mb-2">
+        <label for="amountInput" class="form-label">Введите сумму</label>
+        <input
+          name="amount"
+          type="number"
+          step="any"
+          id="amountInput"
+          class="form-control"
+          placeholder="Введите число"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="descriptionTextarea" class="form-label"
+          >Введите описание</label
+        >
+        <textarea class="form-control" name="description"></textarea>
+      </div>
     </div>
 
     <div class="col-auto">
-      <label for="typeSelect" class="form-label">Тип данных</label>
-      <select name="type" id="typeSelect" class="form-select">
-        <option value="in">Пополнение</option>
-        <option value="out">Расход</option>
-      </select>
-    </div>
+      <div class="row align-items-end">
+        <div class="col">
+          <label for="typeSelect" class="form-label">Тип данных</label>
+          <select name="type" id="typeSelect" class="form-select">
+            <option value="in">Пополнение</option>
+            <option value="out">Расход</option>
+          </select>
+        </div>
 
-    <div class="col-auto">
-      <button type="submit" class="btn btn-primary h-auto">
-        Добавить
-      </button>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary h-auto">Добавить</button>
+        </div>
+      </div>
     </div>
   </div>
 </form>
