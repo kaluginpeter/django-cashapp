@@ -1,8 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
 <h1>{{ balance }}(Расходы)</h1>
 <form method="post">{% csrf_token %}<input type="number" name="amount">
 <select name="type"><option value="in">Поступление</option> <option value="out">Расход</option></select>
 <button type="submit">Добавить</button>
 </form>
-<ul>{% for payment in payments %}
-<li>{{ payment.amount }}. {{ payment.created }}({{ payment.get_type_display }})</li>
-{% endfor %}</ul>
+
+
+
+
+
+{% include 'balance/components/table.html' %}
+{% endblock %}

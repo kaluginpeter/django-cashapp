@@ -1,0 +1,18 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Количество</th>
+      <th scope="col">Тип</th>
+      <th scope="col">Время</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for payment in payments %}
+    <tr>
+      <th>{{ payment.amount }}</th>
+      <td>{{ payment.type }}</td>
+      <td>{{ payment.created }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
