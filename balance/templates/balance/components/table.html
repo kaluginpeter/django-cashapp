@@ -4,6 +4,7 @@
       <th scope="col">Количество</th>
       <th scope="col">Тип</th>
       <th scope="col">Время</th>
+        <th scope="col">Действия</th>
     </tr>
   </thead>
   <tbody>
@@ -12,6 +13,7 @@
       <th>{{ payment.amount }}</th>
       <td>{{ payment.get_type_display }}</td>
       <td>{{ payment.created }}</td>
+      <td><form method="post" action="/delete/{{ payment.id }}/">{% csrf_token %}<button class="btn btn-danger" type="submit">Удалить</button></form></td>
     </tr>
     {% endfor %}
   </tbody>

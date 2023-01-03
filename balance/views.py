@@ -20,3 +20,10 @@ def payment_create(request):
         data = request.POST
         Payment.objects.create(amount=data['amount'], type=data['type'])
     return redirect('payments_list')
+
+
+def payment_delete(request, payment_id):
+    if request.method == 'POST':
+        payment = Payment.objects.get(id=payment_id)
+        payment.delete()
+    return redirect('payments_list')
