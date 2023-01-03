@@ -1,5 +1,14 @@
-<form method="post" action="/create/">{% csrf_token %}<input type="number" name="amount">
-<select name="type"><option value="in">Поступление</option> <option value="out">Расход</option></select>
-<button type="submit">Добавить</button>
-
+<form action="/create/" method="post">{% csrf_token %}
+    <div class="mb-3">
+      <label for="amount_input" class="form-label">Введите сумму</label>
+      <input name="amount" type="number" step="any" id="amount_input" class="form-control" placeholder="Введите число" required>
+    </div>
+    <div class="mb-3">
+      <label for="type_select" class="form-label">Тип данных</label>
+      <select name="type" id="type_select" class="form-select">
+        <option value="in">Пополнение</option>
+          <option value="out">Расход</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить</button>
 </form>
