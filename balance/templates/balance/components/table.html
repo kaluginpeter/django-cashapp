@@ -18,7 +18,7 @@
 
   <tbody>
     {% for payment in payments %}
-    <tr>
+    <tr class="table-{% if payment.type == 'in' %}success{% else %}danger{% endif %}">
       <td>{{ payment.amount }}</td>
       <td>{{ payment.get_type_display }}</td>
       <td>{{ payment.created }}</td>
