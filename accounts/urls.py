@@ -1,5 +1,6 @@
 from django.contrib.auth import views
 from django.urls import path
+from accounts.views import register
 
 urlpatterns = [
     path("login/", views.LoginView.as_view(), name="login"),
@@ -28,4 +29,5 @@ urlpatterns = [
         views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    path('register/', register, name='register')
 ]
