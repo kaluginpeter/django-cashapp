@@ -1,6 +1,13 @@
-
+{% extends 'registration/base.html' %}
 
 {% block content %}
-  <p>Вы вышли из системы!</p>
-  <a href="{% url 'login'%}">Нажмите сюда, чтобы войти снова.</a>
+{{ block.super }}
+
+<main class="form w-100 m-auto">
+  <div class="alert alert-warning">
+    <h3 class="alert-heading">Вы вышли из системы!</h3>
+
+    <a href="{% url 'login'%}">Нажмите, чтобы войти снова.</a>
+  </div>
+</main>
 {% endblock %}

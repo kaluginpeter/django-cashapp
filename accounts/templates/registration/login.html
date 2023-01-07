@@ -1,73 +1,37 @@
-{% extends 'simple.html' %}
-    {% block content %}
-  {% if form.errors %}
-    <p>Имя пользователя и пароль не совпадают. Пожалуйста, попробуйте еще раз.</p>
-  {% endif %}
+{% extends 'registration/base.html' %}
 
-  {% if next %}
-    {% if user.is_authenticated %}
-      <p>У вашей учетной записи нет доступа к этой странице. Чтобы продолжить,
-          пожалуйста, войдите в систему с учетной записью, у которой есть доступ.</p>
-    {% else %}
-      <p>Пожалуйста войдите, чтобы увидеть эту страницу.</p>
-    {% endif %}
-  {% endif %}
-<section class="vh-100">
-  <div class="container-fluid h-custom">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-md-9 col-lg-6 col-xl-5">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-          class="img-fluid" alt="Sample image">
-      </div>
-    <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-  <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    <div class="form-group">
+{% block content %}
+{{ block.super }}
 
-        <label for="{{ form.username.id_for_label }}">Username:</label>
-        {{ form.username }}
-        {{ form.username.errors }}
+<main class="form w-100 m-auto">
+  <div class="card">
+    <div class="card-body">
+      <form method="post">
+        <h1 class="h3 mb-3 fw-normal card-title">Авторизация</h1>
 
-    </div>
-    <div class="form-group">
-
-        <label for="{{ form.password.id_for_label }}">Password:</label>
-        {{ form.password }}
-        {{ form.password.errors }}
-    </div>
-    <button class="btn btn-outline-primary">Войти</button>
-    <input type="hidden" name="next" value="{{ next }}">
-  </form>
-    </div>
-
-  {# Assumes you setup the password_reset view in your URLconf #}
-  <p><a href="{% url 'password_reset' %}">Забыли пароль??</a></p>
-        <div class="container pb-auto">
-<div
-    class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
-    <!-- Copyright -->
-    <div class="text-white mb-3 mb-md-0">
-      Copyright © 2023. All rights reserved.
-    </div>
-    <!-- Copyright -->
-
-    <!-- Right -->
-    <div>
-      <a href="https://facebook.com/" class="text-white me-4">
-        <i class="fab fa-facebook-f">Facebook</i>
-      </a>
-      <a href="https://twitter.com/" class="text-white me-4">
-        <i class="fab fa-twitter">Twitter</i>
-      </a>
-      <a href="https://www.google.com/" class="text-white me-4">
-        <i class="fab fa-google">Google</i>
-      </a>
-      <a href="https://www.linkedin.com/" class="text-white">
-        <i class="fab fa-linkedin-in">Linkedin</i>
-      </a>
-    </div>
-    <!-- Right -->
-  </div>
+        {% if form.errors %}
+        <div class="alert alert-danger">
+          Имя пользователя или пароль не совпадают. Пожалуйста, попробуйте еще раз.
         </div>
+        {% endif %}
+
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="usernameInput">Имя пользователя</label>
+          <input type="text" class="form-control" id="usernameInput" name="username">
+        </div>
+
+        <div class="form-group">
+          <label for="passwordInput">Пароль</label>
+          <input type="password" class="form-control" id="passwordInput" name="password">
+        </div>
+
+        <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+
+        <button class="w-100 btn btn-primary mt-3" type="submit">Войти</button>
+      </form>
+    </div>
+  </div>
+</main>
 {% endblock %}
