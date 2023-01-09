@@ -1,12 +1,19 @@
 {% extends 'base.html' %} {% block content %}
-    <div class="mb-3">
-        <h4>Текущий баланс {{ balance }}</h4>
-
-        {% include 'balance/components/form.html' %}
+    <div class="card mb-3 shadow">
+        <div class="card-header">
+            <h4>Текущий баланс <span class="badge text-bg-{% if balance > 0 %}success{% elif balance == 0 %}info{% else %}danger{% endif %} shadow">{{ balance }}₽</span></h4>
+        </div>
+        <div class="card-body">
+            {% include 'balance/components/form.html' %}
+        </div>
     </div>
 
-    <div>
-        <h4>История изменений</h4>
-        {% include 'balance/components/table.html' %}
+    <div class="card shadow">
+        <div class="card-header">
+            <h4>История изменений</h4>
+        </div>
+        <div class="card-body">
+            {% include 'balance/components/table.html' %}
+        </div>
     </div>
 {% endblock %}
