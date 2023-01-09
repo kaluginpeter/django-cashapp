@@ -6,12 +6,13 @@ from django.contrib.auth.password_validation import validate_password
 from django.core import validators
 import django.contrib.auth.password_validation
 
+
+
 class UserForm(forms.ModelForm):
-    password=forms.CharField(widget=forms.PasswordInput,validators=[validate_password])
+    error_css_class = 'alert'
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}), validators=[validate_password], label='Пароль')
     class Meta():
         model = User
         fields = ('username','password','email')
-class UserProfileInfoForm(forms.ModelForm):
-     class Meta():
-         model = UserProfileInfo
-         fields = ('portfolio_site','profile_pic')
+        widgets = {'username': forms.TextInput(attrs={'class':'form-control'}),
+                   'email': forms.EmailInput(attrs={'class':'form-control'})}
