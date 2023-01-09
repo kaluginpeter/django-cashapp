@@ -13,7 +13,7 @@ def register(request):
             new_user.set_password(form.cleaned_data["password"])
             new_user.save()
 
-            return redirect('login')
+            return redirect('/')
     else:
         form = UserForm()
     return render(
