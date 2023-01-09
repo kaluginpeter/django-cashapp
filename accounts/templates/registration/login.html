@@ -8,7 +8,9 @@
             <div class="card-body">
                 <form method="post">
                     <h1 class="h3 mb-3 fw-normal card-title">Авторизация</h1>
-
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
 
                     {% csrf_token %}
 
