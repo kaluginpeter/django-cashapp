@@ -1,34 +1,39 @@
 {% extends 'registration/base.html' %}
 
 {% block content %}
-{{ block.super }}
-<style>
-input~span{display: none}
-input:focus+span{display: block}
-</style>
-<main class="form w-100 m-auto">
-  <div class="card">
-    <div class="card-body">
-      <form method="post">
-        <h1 class="h3 mb-3 fw-normal card-title">Регистрация</h1>
+    {{ block.super }}
+    <style>
+        input ~ span {
+            display: none
+        }
 
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="form-group"> {{ field.label_tag }}
-            {{ field }}
-            <span>{{ field.help_text }}</span>
-            {% for error in field.errors %}
-            <div class="alert alert-danger mt-3">{{ error }}</div>
-            {% endfor %}
+        input:focus + span {
+            display: block
+        }
+    </style>
+    <main class="form w-100 m-auto">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    <h1 class="h3 mb-3 fw-normal card-title">Регистрация</h1>
+
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group"> {{ field.label_tag }}
+                            {{ field }}
+                            <span>{{ field.help_text }}</span>
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger mt-3">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <button class="w-100 btn btn-primary mt-3" type="submit">Зарегистрироваться</button>
+
+                </form>
             </div>
-          {% endfor %}
-        <button class="w-100 btn btn-primary mt-3" type="submit">Зарегистрироваться</button>
-
-      </form>
-    </div>
-  <div class="card-footer">
-      <a href="{% url 'login' %}">Уже есть аккаунт?</a>
-  </div>
-  </div>
-</main>
+            <div class="card-footer">
+                <a href="{% url 'login' %}">Уже есть аккаунт?</a>
+            </div>
+        </div>
+    </main>
 {% endblock %}

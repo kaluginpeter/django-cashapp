@@ -1,45 +1,46 @@
 {% load static %}
 <table class="table">
-  <colgroup>
-    <col style="width:10%">
-    <col style="width:20%">
-    <col style="width:40%">
-    <col style="width:20%">
-      <col style="width:10% ">
-  </colgroup>
+    <colgroup>
+        <col style="width:10%">
+        <col style="width:20%">
+        <col style="width:40%">
+        <col style="width:20%">
+        <col style="width:10% ">
+    </colgroup>
 
-  <thead>
+    <thead>
     <tr>
-      <th scope="col">Сумма</th>
-      <th scope="col">Тип</th>
+        <th scope="col">Сумма</th>
+        <th scope="col">Тип</th>
         <th scope="col">Описание</th>
-      <th scope="col">Время</th>
-      <th scope="col">Действия</th>
+        <th scope="col">Время</th>
+        <th scope="col">Действия</th>
     </tr>
-  </thead>
+    </thead>
 
-  <tbody>
+    <tbody>
     {% for payment in payments %}
-    <tr class="table-{% if payment.type == 'in' %}success{% else %}danger{% endif %}">
-      <td>{{ payment.amount }}</td>
-      <td>{{ payment.get_type_display }}</td>
-        <td>{{ payment.description }}</td>
-      <td>{{ payment.created }}</td>
-      <td>
-        <form method="post" action="/delete/{{ payment.id }}/">
-          {% csrf_token %}<button class="btn btn-danger" type="submit">
-            Удалить
-          </button>
-        </form>
-      </td>
-    </tr>
+        <tr class="table-{% if payment.type == 'in' %}success{% else %}danger{% endif %}">
+            <td>{{ payment.amount }}</td>
+            <td>{{ payment.get_type_display }}</td>
+            <td>{{ payment.description }}</td>
+            <td>{{ payment.created }}</td>
+            <td>
+                <form method="post" action="/delete/{{ payment.id }}/">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" type="submit">
+                        Удалить
+                    </button>
+                </form>
+            </td>
+        </tr>
     {% empty %}
-    <tr>
-      <th colspan="4" class="text-center">
-        <img width="300px" src="{% static 'balance/images/no_money.png' %}" />
-        <p>Здесь ничего нет</p>
-      </th>
-    </tr>
+        <tr>
+            <th colspan="4" class="text-center">
+                <img width="300px" src="{% static 'balance/images/no_money.png' %}"/>
+                <p>Здесь ничего нет</p>
+            </th>
+        </tr>
     {% endfor %}
-  </tbody>
+    </tbody>
 </table>

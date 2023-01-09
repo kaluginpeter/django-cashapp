@@ -1,6 +1,6 @@
-
 from django.shortcuts import render, redirect
 from accounts.forms import UserForm
+
 
 # Create your views here.
 def register(request):
@@ -13,4 +13,5 @@ def register(request):
             return redirect('login')
     else:
         form = UserForm()
-    return render(request, 'registration/registration.html', {'form': form})
+    return render(
+        request, 'registration/registration.html', {'form': form})

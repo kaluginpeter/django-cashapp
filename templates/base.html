@@ -1,14 +1,15 @@
 {% extends 'simple.html' %}
 {% block header %}
-<nav class="navbar navbar-dark bg-dark">
-      <div class="container">
-      
-      <span class="navbar-brand mb-0 h1">Cashapp</span>
-           {% if user.is_authenticated %}
-           <a href="{% url 'logout' %}?next={{ request.path }}" class="btn btn-outline-danger">Выйти из аккаунта</a>
-           {% else %}
-           <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-outline-success">Войти в аккаунт</a>
-           {% endif %}
-      </div>
-      </nav>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+
+            <span class="navbar-brand mb-0 h1">Cashapp</span>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}?next={{ request.path }}" class="btn btn-outline-danger">Выйти из
+                    аккаунта</a>
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-outline-success">Войти в аккаунт</a>
+            {% endif %}
+        </div>
+    </nav>
 {% endblock %}

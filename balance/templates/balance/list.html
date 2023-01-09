@@ -1,12 +1,12 @@
 {% extends 'base.html' %} {% block content %}
-<div class="mb-3">
-  <h4>Текущий баланс {{ balance }}</h4>
+    <div class="mb-3">
+        <h4>Текущий баланс {{ balance }}</h4>
 
-  {% include 'balance/components/form.html' %}
-</div>
+        {% include 'balance/components/form.html' %}
+    </div>
 
-<div>
-  <h4>История изменений</h4>
-  {% include 'balance/components/table.html' %}
-</div>
+    <div>
+        <h4>История изменений</h4>
+        {% include 'balance/components/table.html' %}
+    </div>
 {% endblock %}
