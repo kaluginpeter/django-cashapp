@@ -3,15 +3,16 @@ from balance.models import Payment, PAYMENT_TYPE_IN
 
 
 def payments_list(request):
+    if not request.user.is_authenticated:
+        return render(request, 'balance/index.html')
     payments = Payment.objects.all()
     balance = 0
-
     for payment in payments:
         if payment.type == PAYMENT_TYPE_IN:
             balance += payment.amount
         else:
             balance -= payment.amount
-    return render(request, 'balance/list.html', {'payments':payments, 'balance': balance})
+    return render(request, 'balance/list.html', {'payments': payments, 'balance': balance})
 
 
 def payment_create(request):
