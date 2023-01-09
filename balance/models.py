@@ -1,11 +1,12 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 PAYMENT_TYPE_IN = 'in'
 PAYMENT_TYPE_OUT = 'out'
 
 
 class Payment(models.Model):
+    user = models.ForeignKey(User, related_name='payments', on_delete=models.CASCADE, null=True)
     amount = models.FloatField()
     type = models.CharField(max_length=3, choices=(
         (PAYMENT_TYPE_IN, 'Поступление'),
