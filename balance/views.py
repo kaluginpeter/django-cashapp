@@ -37,7 +37,13 @@ def payment_delete(request, payment_id):
 @login_required
 def payments_list(request):
     payments = Payment.objects.filter(user=request.user)
-    paginator = Paginator(payments, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+
+    # get params
+    page = request.GET.get('page')
+    per_page = request.GET.get('per_page', 10)
+
+    # create paginator
+    paginator = Paginator(payments, per_page)
+    page_obj = paginator.get_page(page)
+
     return render(request, 'balance/list.html', {'page_obj': page_obj})

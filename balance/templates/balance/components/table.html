@@ -36,11 +36,13 @@
         </tr>
     {% empty %}
         <tr>
-            <th colspan="5" class="text-center" style="border-bottom: 0">
+            <td colspan="5" class="text-center" style="border-bottom: 0">
                 <img width="300px" src="{% static 'balance/images/no_money.png' %}"/>
                 <p>Здесь ничего нет</p>
-            </th>
+            </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+
+{% include "balance/components/pagination.html" %}
