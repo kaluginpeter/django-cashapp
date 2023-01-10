@@ -16,7 +16,10 @@
         </div>
         <div class="card-body">
             {% include 'balance/components/table.html' %}
-            <a class="button" href="{% url 'payments_list' %}">Смотреть все</a>
+
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-outline-primary" href="{% url 'payments_list' %}">Смотреть все</a>
+            </div>
         </div>
     </div>
 {% endblock %}

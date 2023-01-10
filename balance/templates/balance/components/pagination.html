@@ -1,0 +1,28 @@
+{% if page_obj %}
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">В начало</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущий</a></li>
+            {% else %}
+                <li class="page-item"><span class="page-link disabled">Предыдущий</span></li>
+            {% endif %}
+
+            {% for page in page_obj.paginator.page_range %}
+                {% if page >= page_obj.number|add:"-3" and page_obj.number|add:"3" >= page %}
+                    <li class="page-item {% if page_obj.number == page %}active{% endif %}">
+                        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующий</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">В конец</a></li>
+            {% else %}
+                <li class="page-item"> <span class="page-link disabled">Следующий</span></li>
+            {% endif %}
+            </li>
+        </ul>
+    </div>
+{% endif %}
