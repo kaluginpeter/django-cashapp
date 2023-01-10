@@ -1,19 +1,39 @@
-{% extends 'base.html' %} {% block content %}
-    <div class="card mb-3 shadow">
-        <div class="card-header">
-            <h4>Текущий баланс <span class="badge text-bg-{% if balance > 0 %}success{% elif balance == 0 %}info{% else %}danger{% endif %} shadow">{{ balance }}₽</span></h4>
-        </div>
-        <div class="card-body">
-            {% include 'balance/components/form.html' %}
-        </div>
-    </div>
+{% extends 'base.html' %}
 
-    <div class="card shadow">
+{% block content %}
+    <div class="card shadow mb-3">
         <div class="card-header">
             <h4>История изменений</h4>
         </div>
         <div class="card-body">
-            {% include 'balance/components/table.html' %}
+            {% with payments=page_obj.object_list %}
+                {% include 'balance/components/table.html' %}
+            {% endwith %}
         </div>
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+
+            <li class="page-item">{% if page_obj.has_previous %}
+                <a class="page-link"
+                   href="?page={{ page_obj.previous_page_number }}">Предыдущий</a>{% else %}
+                <span class="page-link disabled">Предыдущий</span>{% endif %}
+            </li>
+
+            {% for page in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == page %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                </li>
+            {% endfor %}
+
+            <li class="page-item">{% if page_obj.has_next %}
+                <a class="page-link"
+                   href="?page={{ page_obj.next_page_number }}">Следующий</a>{% else %}
+                <span class="page-link disabled">Следующий</span>{% endif %}
+            </li>
+        </ul>
+    </nav>
+    <div class='d-flex justify-content-center mt-3'>
+        <a class="text-center" href="/">На главную</a>
     </div>
 {% endblock %}
