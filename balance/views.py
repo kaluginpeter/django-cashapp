@@ -47,3 +47,7 @@ def payments_list(request):
     page_obj = paginator.get_page(page)
 
     return render(request, 'balance/list.html', {'page_obj': page_obj})
+
+
+def faq(request):
+    return render(request, 'balance/faq.html')
