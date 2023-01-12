@@ -19,7 +19,15 @@
                 </form>
             </div>
         </div>
-
+        <form method="get">
+            <button type="submit" class="btn btn-sm btn-primary btn-raised mr-3">Сортировать</button>
+            <div class="dropdown">
+                <input class="dropdown-item" name="sort" type="checkbox" value="amount">по цене - по возрастанию
+                <input class="dropdown-item" name="sort" type="checkbox" value="-amount">по цене - по убыванию
+                <input class="dropdown-item" name="sort" type="checkbox" value="created">по дате - сначала старые
+                <input class="dropdown-item" name="sort" type="checkbox" value="-created">по дате - сначала новые
+            </div>
+        </form>
         <div class="card-body">
             {% with payments=page_obj.object_list %}
                 {% include 'balance/components/table.html' %}

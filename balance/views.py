@@ -36,7 +36,8 @@ def payment_delete(request, payment_id):
 
 @login_required
 def payments_list(request):
-    payments = Payment.objects.filter(user=request.user)
+    sort = request.GET.getlist('sort')
+    payments = Payment.objects.filter(user=request.user).order_by(*sort)
 
     # get params
     page = request.GET.get('page')
