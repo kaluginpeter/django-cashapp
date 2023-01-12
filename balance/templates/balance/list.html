@@ -20,12 +20,32 @@
             </div>
         </div>
         <form method="get">
-            <button type="submit" class="btn btn-sm btn-primary btn-raised mr-3">Сортировать</button>
             <div class="dropdown">
-                <input class="dropdown-item" name="sort" type="checkbox" value="amount">по цене - по возрастанию
-                <input class="dropdown-item" name="sort" type="checkbox" value="-amount">по цене - по убыванию
-                <input class="dropdown-item" name="sort" type="checkbox" value="created">по дате - сначала старые
-                <input class="dropdown-item" name="sort" type="checkbox" value="-created">по дате - сначала новые
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Сортировать по:
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li>
+                        <button class="dropdown-item" name="sort" type="submit" value="amount">по цене - по
+                            возрастанию
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" name="sort" type="submit" value="-amount">по цене - по убыванию
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" name="sort" type="submit" value="created">по дате - сначала
+                            старые
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" name="sort" type="submit" value="-created">по дате - сначала
+                            новые
+                        </button>
+                    </li>
+                </ul>
             </div>
         </form>
         <div class="card-body">
