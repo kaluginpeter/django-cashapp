@@ -4,4 +4,4 @@ from balance.models import Payment
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('amount', 'type', 'user')
