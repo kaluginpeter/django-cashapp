@@ -36,8 +36,10 @@ def payment_delete(request, payment_id):
 
 @login_required
 def payments_list(request):
-    sort = request.GET.getlist('sort')
-    payments = Payment.objects.filter(user=request.user).order_by(*sort)
+    payments = Payment.objects.filter(user=request.user)
+
+    if (sort := request.GET.getlist('sort')):
+        payments = payments.order_by(*sort)
 
     # get params
     page = request.GET.get('page')
@@ -47,7 +49,15 @@ def payments_list(request):
     paginator = Paginator(payments, per_page)
     page_obj = paginator.get_page(page)
 
-    return render(request, 'balance/list.html', {'page_obj': page_obj})
+    return render(request, 'balance/list.html', {'page_obj': page_obj, 'table_headers': {
+        'amount': 'Сумма',
+        'type': 'Тип операции',
+        'description': {
+            'value': 'Описание',
+            'sort': False,
+        },
+        'created': 'Время'
+    }})
 
 
 def faq(request):
