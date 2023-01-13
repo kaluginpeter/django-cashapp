@@ -1,6 +1,5 @@
 from django import template
 
-
 register = template.Library()
 
 
@@ -55,8 +54,7 @@ def append_params(*, request, start_with_unique="-", unique=True, **kwargs):
             Rendered:
                 "?sort=+abc
     """
-    params = { key: set(values) for (key, values) in request.GET.lists() }
-
+    params = {key: set(values) for (key, values) in request.GET.lists()}
     for key, value in kwargs.items():
         value = str(value)
 
@@ -166,5 +164,6 @@ def list_position(*, request, key, value, start_with_unique="-"):
     """
     selected_list = request.GET.getlist(key)
 
-    if (current_value := start_with_unique + value) and current_value in selected_list or (current_value := value) in selected_list:
+    if (current_value := start_with_unique + value) and current_value in selected_list or (
+            current_value := value) in selected_list:
         return selected_list.index(current_value) + 1
