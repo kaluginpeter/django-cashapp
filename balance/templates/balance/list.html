@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load balance_helpers %}
+
 
 {% block content %}
     <a class="btn btn-outline-secondary mb-3" href="/">На главную</a>
@@ -8,29 +11,140 @@
             <div class="d-flex justify-content-between">
                 <h4>История изменений</h4>
 
-                <form class="d-flex justify-content-between align-items-center gap-3">
-                    <label>Показывать на странице:</label>
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Показывать на странице: {{ request.GET.per_page|default:"10" }} элементов
+                    </button>
 
-                    <select class="form-select" name="per_page" style="width: 200px" onchange="this.form.submit()">
-                        <option value="10" {% if request.GET.per_page == "10" %}selected{% endif %}>10</option>
-                        <option value="25" {% if request.GET.per_page == "25" %}selected{% endif %}>25</option>
-                        <option value="50" {% if request.GET.per_page == "50" %}selected{% endif %}>50</option>
-                    </select>
-                </form>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        {% for item in "10 25 50"|to_list %}
+                            <li>
+                                <a 
+                                    class="dropdown-item {% if request.GET.per_page == item or item == 10 %}active{% endif %}" 
+                                    href="{% append_params request=request per_page=item %}"
+                                >
+                                    {{ item }} элементов
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
-        <form method="get">
-            <button type="submit" class="btn btn-sm btn-primary btn-raised mr-3">Сортировать</button>
-            <div class="dropdown">
-                <input class="dropdown-item" name="sort" type="checkbox" value="amount">по цене - по возрастанию
-                <input class="dropdown-item" name="sort" type="checkbox" value="-amount">по цене - по убыванию
-                <input class="dropdown-item" name="sort" type="checkbox" value="created">по дате - сначала старые
-                <input class="dropdown-item" name="sort" type="checkbox" value="-created">по дате - сначала новые
-            </div>
-        </form>
+
         <div class="card-body">
             {% with payments=page_obj.object_list %}
-                {% include 'balance/components/table.html' %}
+                <table class="table">
+                    <colgroup>
+                        <col style="width:15%">
+                        <col style="width:20%">
+                        <col style="width:35%">
+                        <col style="width:20%">
+                        <col style="width:10%">
+                    </colgroup>
+
+                    <thead>
+                    <tr>
+                        {% for field, label in table_headers.items %}
+                            <th scope="col">
+                                {% if not label.sort == False %}
+                                    {% with negative='-'|add:field default=field %}
+                                        <a href="{% append_params request=request unique=0 sort=field %}">{{ label }}</a>
+
+                                        {% if negative in request.GET|get_list:"sort" or default in request.GET|get_list:"sort" %}
+                                            {% if negative in request.GET|get_list:"sort" %}
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-up" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" color="green">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                    <line x1="18" y1="11" x2="12" y2="5"></line>
+                                                    <line x1="6" y1="11" x2="12" y2="5"></line>
+                                                </svg>
+                                            {% else %}
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-down" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" color="red">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                    <line x1="18" y1="13" x2="12" y2="19"></line>
+                                                    <line x1="6" y1="13" x2="12" y2="19"></line>
+                                                </svg>
+                                            {% endif %}
+                                            <sup>{% list_position request=request key="sort" value=field %}</sup>
+
+                                            <a href="{% remove_params request=request sort=field %}" style="text-decoration: none; color: red">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                            </a>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% else %}
+                                    {% if label.value %}
+                                        {{ label.value }}
+                                    {% else %}
+                                        {{ label }}
+                                    {% endif %}
+                                {% endif %}
+                            </th>
+                        {% endfor %}
+                        
+                        <th scope="col">Действия</th>
+                    </tr>
+                    </thead>
+                
+                    <tbody>
+                    {% for payment in payments %}
+                        <tr class="table-{% if payment.type == 'in' %}success{% else %}danger{% endif %}">
+                            <td>{{ payment.amount }}</td>
+                            <td>{{ payment.get_type_display }}</td>
+                            <td>{{ payment.description }}</td>
+                            <td>{{ payment.created }}</td>
+                            <td>
+                                <form method="post" action="/delete/{{ payment.id }}/">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger" type="submit">
+                                        Удалить
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center" style="border-bottom: 0">
+                                <img width="300px" src="{% static 'balance/images/no_money.png' %}"/>
+                                <p>Здесь ничего нет</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="d-flex justify-content-center">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="{% append_params request=request page='1' %}">В начало</a></li>
+                            <li class="page-item"><a class="page-link" href="{% append_params request=request page=page_obj.previous_page_number %}">Предыдущий</a></li>
+                        {% else %}
+                            <li class="page-item"><span class="page-link disabled">Предыдущий</span></li>
+                        {% endif %}
+
+                        {% for page in page_obj.paginator.page_range %}
+                            {% if page >= page_obj.number|add:"-3" and page_obj.number|add:"3" >= page %}
+                                <li class="page-item {% if page_obj.number == page %}active{% endif %}">
+                                    <a class="page-link" href="{% append_params request=request page=page %}">{{ page }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="{% append_params request=request page=page_obj.next_page_number %}">Следующий</a></li>
+                            <li class="page-item"><a class="page-link" href="{% append_params request=request page=page_obj.paginator.num_pages %}">В конец</a></li>
+                        {% else %}
+                            <li class="page-item"> <span class="page-link disabled">Следующий</span></li>
+                        {% endif %}
+                        </li>
+                    </ul>
+                </div>
             {% endwith %}
         </div>
     </div>

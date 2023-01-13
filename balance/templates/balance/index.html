@@ -1,4 +1,8 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
     <div class="card mb-3 shadow">
         <div class="card-header">
             <h4>Текущий баланс <span
@@ -6,7 +10,46 @@
             </h4>
         </div>
         <div class="card-body">
-            {% include 'balance/components/form.html' %}
+            <form action="/create/" method="post">
+                {% csrf_token %}
+                <div class="row align-items-start">
+                    <div class="col">
+                        <div class="mb-2">
+                            <label for="amountInput" class="form-label">Введите сумму</label>
+                            <input
+                                    name="amount"
+                                    type="number"
+                                    step="any"
+                                    id="amountInput"
+                                    class="form-control"
+                                    placeholder="Введите число"
+                                    required
+                            />
+                        </div>
+            
+                        <div>
+                            <label for="descriptionTextarea" class="form-label">Введите описание</label>
+                            <textarea id="descriptionTextarea" class="form-control" name="description"></textarea>
+                        </div>
+                    </div>
+            
+                    <div class="col-auto">
+                        <div class="row align-items-end">
+                            <div class="col">
+                                <label for="typeSelect" class="form-label">Тип данных</label>
+                                <select name="type" id="typeSelect" class="form-select">
+                                    <option value="in">Пополнение</option>
+                                    <option value="out">Расход</option>
+                                </select>
+                            </div>
+            
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary h-auto">Добавить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>            
         </div>
     </div>
 
@@ -15,7 +58,51 @@
             <h4>Последние изменения</h4>
         </div>
         <div class="card-body">
-            {% include 'balance/components/table.html' %}
+            <table class="table">
+                <colgroup>
+                    <col style="width:10%">
+                    <col style="width:20%">
+                    <col style="width:40%">
+                    <col style="width:20%">
+                    <col style="width:10%">
+                </colgroup>
+            
+                <thead>
+                <tr>
+                    <th scope="col">Сумма</th>
+                    <th scope="col">Тип операции</th>
+                    <th scope="col">Описание</th>
+                    <th scope="col">Время</th>
+                    <th scope="col">Действия</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for payment in payments %}
+                    <tr class="table-{% if payment.type == 'in' %}success{% else %}danger{% endif %}">
+                        <td>{{ payment.amount }}</td>
+                        <td>{{ payment.get_type_display }}</td>
+                        <td>{{ payment.description }}</td>
+                        <td>{{ payment.created }}</td>
+                        <td>
+                            <form method="post" action="/delete/{{ payment.id }}/">
+                                {% csrf_token %}
+                                <button class="btn btn-danger" type="submit">
+                                    Удалить
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center" style="border-bottom: 0">
+                            <img width="300px" src="{% static 'balance/images/no_money.png' %}"/>
+                            <p>Здесь ничего нет</p>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
             <div class="d-flex justify-content-center">
                 <a class="btn btn-outline-primary" href="{% url 'payments_list' %}">Смотреть все</a>
