@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum, F, Case, When, FloatField
 
 PAYMENT_TYPE_IN = 'in'
 PAYMENT_TYPE_OUT = 'out'
@@ -17,3 +18,10 @@ class Payment(models.Model):
 
     class Meta:
         ordering = ('-created',)
+
+    @staticmethod
+    def balance():
+        balance = Payment.objects.aggregate(balance=Sum(Case(
+            When(type=PAYMENT_TYPE_IN, then=F('amount')),
+            When(type=PAYMENT_TYPE_OUT, then=-F('amount')), output_field=FloatField())))
+        return balance['balance']

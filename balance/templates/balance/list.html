@@ -8,6 +8,11 @@
 
     <div class="card shadow mb-3">
         <div class="card-header">
+            <h4>Текущий баланс <span
+                    class="badge text-bg-{% if balance > 0 %}success{% elif balance == 0 %}info{% else %}danger{% endif %} shadow">{{ balance }}₽</span>
+            </h4>
+        </div>
+        <div class="card-header">
             <div class="d-flex justify-content-between">
                 <h4>История изменений</h4>
 
