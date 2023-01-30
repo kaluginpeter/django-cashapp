@@ -1,20 +1,18 @@
 from django.shortcuts import render, redirect
-from balance.models import Payment, PAYMENT_TYPE_IN
+from balance.models import Payment, PAYMENT_TYPE_IN, PAYMENT_TYPE_OUT
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Sum, F, Case, When, FloatField
 
 
 def home_page(request):
     if not request.user.is_authenticated:
         return render(request, 'balance/not_auth_index.html')
     payments = Payment.objects.filter(user=request.user)[:5]
-    balance = 0
-    for payment in payments:
-        if payment.type == PAYMENT_TYPE_IN:
-            balance += payment.amount
-        else:
-            balance -= payment.amount
-    return render(request, 'balance/index.html', {'payments': payments, 'balance': balance})
+    balance = Payment.objects.aggregate(balance=Sum(Case(
+        When(type=PAYMENT_TYPE_IN, then=F('amount')),
+        When(type=PAYMENT_TYPE_OUT, then=-F('amount')), output_field=FloatField())))
+    return render(request, 'balance/index.html', {'payments': payments, 'balance': balance['balance']})
 
 
 @login_required
