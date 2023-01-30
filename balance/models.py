@@ -20,8 +20,8 @@ class Payment(models.Model):
         ordering = ('-created',)
 
     @staticmethod
-    def balance():
-        balance = Payment.objects.aggregate(balance=Sum(Case(
+    def balance(user):
+        balance = Payment.objects.filter(user=user).aggregate(balance=Sum(Case(
             When(type=PAYMENT_TYPE_IN, then=F('amount')),
             When(type=PAYMENT_TYPE_OUT, then=-F('amount')), output_field=FloatField())))
-        return balance['balance']
+        return balance['balance'] or 0

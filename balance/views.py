@@ -8,8 +8,8 @@ from django.core.paginator import Paginator
 def home_page(request):
     if not request.user.is_authenticated:
         return render(request, 'balance/not_auth_index.html')
-    payments = Payment.objects.filter(user=request.user)[:5]
-    return render(request, 'balance/index.html', {'payments': payments, 'balance': Payment.balance()})
+    payments = Payment.objects.filter(user=request.user)
+    return render(request, 'balance/index.html', {'payments': payments[:5], 'count': payments.count(), 'balance': Payment.balance(request.user)})
 
 
 @login_required
@@ -18,7 +18,7 @@ def payment_create(request):
         data = request.POST
         Payment.objects.create(amount=data['amount'], type=data['type'], description=data['description'],
                                user=request.user)
-    return redirect('home')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required
@@ -45,7 +45,7 @@ def payments_list(request):
     page_obj = paginator.get_page(page)
 
     return render(request, 'balance/list.html',
-                  {'page_obj': page_obj, 'balance': Payment.balance(), 'table_headers': {
+                  {'page_obj': page_obj, 'balance': Payment.balance(request.user), 'table_headers': {
                       'amount': 'Сумма',
                       'type': 'Тип операции',
                       'description': {
