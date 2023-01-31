@@ -145,4 +145,4 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning'
 }
 
-CSRF_TRUSTED_ORIGINS = [os.getenv('BASE_URL'), 'http://localhost']
+CSRF_TRUSTED_ORIGINS = [os.getenv('BASE_URL')]
